@@ -1,0 +1,25 @@
+{
+  "name": "spotlight",
+  "version": "0.0.1",
+  "description": "Spotlight project",
+  "dependencies": {
+    "canvas": "^1.6.5",
+    "ws": "^2.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1"
+  },
+  "scripts": {
+    "client": "cd client && python3 -m http.server 8000",
+    "lint": "eslint client/ server/",
+    "server": "node server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "namafutatsu",
+  "license": "GPL"
+}
