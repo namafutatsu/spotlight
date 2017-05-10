@@ -2,10 +2,6 @@
   "name": "spotlight",
   "version": "0.1.0",
   "description": "Spotlight project",
-  "dependencies": {
-    "canvas": "^1.6.5",
-    "ws": "^2.3.1"
-  },
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
@@ -15,6 +11,7 @@
     "eslint-plugin-standard": "^3.0.1"
   },
   "scripts": {
+    "postinstall": "cd server && npm install",
     "client": "cd client && python3 -m http.server 8000",
     "lint": "eslint client/ server/",
     "server": "node server/index.js",

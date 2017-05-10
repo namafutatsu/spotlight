@@ -1,0 +1,26 @@
+server {
+    listen 80;
+    server_name {{ item.public_url }};
+
+    access_log /var/log/nginx/{{item.name}}.access.log;
+    error_log /var/log/nginx/{{item.name}}.error.log;
+
+    client_max_body_size 0;
+    chunked_transfer_encoding on;
+    proxy_read_timeout 3600;
+    proxy_connect_timeout 3600;
+
+    location / {
+      proxy_http_version 1.1;
+
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header Host $http_host;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+
+      proxy_redirect off;
+      proxy_pass http://127.0.0.1:{{item.port}};
+    }
+}

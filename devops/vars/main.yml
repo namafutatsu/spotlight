@@ -1,0 +1,15 @@
+---
+applications:
+  - name: client
+    image_name: spotlight_client
+    container_name: spotlight-client
+    port: 8000
+    public_url: spotlight.cam
+    env_vars:
+      - "SPOTLIGHT_WS_URL=ws://ws.spotlight.cam"
+
+  - name: server
+    image_name: spotlight_server
+    container_name: spotlight-server
+    port: 8080
+    public_url: ws.spotlight.cam
