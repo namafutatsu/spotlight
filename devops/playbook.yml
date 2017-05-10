@@ -1,0 +1,88 @@
+---
+- hosts: spotlight
+  become: yes
+  vars_files:
+    - vars/main.yml
+  tasks:
+  - name: Install docker system dependencies
+    apt:
+      name: "{{ item }}"
+      update_cache: yes
+    with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - nginx
+    - python-docker
+
+  - name: Add Docker CE signing repository key
+    shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+
+  - name: Register Ubuntu release name
+    command: "lsb_release -cs"
+    register: ubuntu_name
+
+  - name: Add Docker CE repository
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ubuntu_name.stdout}} stable"
+      state: present
+
+  - name: Install docker
+    package:
+      name: docker-ce
+      state: present
+
+  - name: Add user to docker group
+    user:
+      name: "{{ lookup('env', 'USER') }}"
+      groups: docker
+      append: yes
+
+  - name: Locally build the image files
+    local_action: command make docker_images
+    args:
+      chdir: ..
+
+  - name: Copy the docker images to the distant server
+    copy:
+      src: "../{{ item.name }}/image.tar"
+      dest: "/tmp/{{ item.name }}.tar"
+    with_items: "{{ applications }}"
+
+  - name: Load the images into distant docker image repository
+    docker_image:
+      force: yes
+      name: "{{ item.image_name }}"
+      tag: latest
+      load_path: "/tmp/{{ item.name }}.tar"
+    with_items: "{{ applications }}"
+
+  - name: Create systemd services to run the images
+    template:
+      src: service.j2
+      dest: "/etc/systemd/system/{{ item.container_name }}.service"
+    with_items: "{{ applications }}"
+
+  - name: Start both client and server images
+    systemd:
+      enabled: yes
+      state: restarted
+      daemon_reload: yes
+      name: "{{ item.container_name }}"
+    with_items: "{{ applications }}"
+ 
+  - name: Disable nginx default website
+    file:
+      path: /etc/nginx/sites-enabled/default
+      state: absent
+
+  - name: Configure nginx to provide both sites
+    template:
+      src: site.j2
+      dest: "/etc/nginx/sites-enabled/{{ item.name }}"
+    with_items: "{{ applications }}"
+
+  - name: Restart nginx
+    service:
+      name: nginx
+      state: restarted

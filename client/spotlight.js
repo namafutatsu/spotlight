@@ -1,9 +1,9 @@
-/* global WebSocket */
+/* global WebSocket, SPOTLIGHT_WS_URL */
 
 const TYPE_IMAGE = 'image'
 const TYPE_REGION = 'region'
 
-const WS_ADDRESS = 'ws://127.0.0.1:8080'
+const WS_ADDRESS = SPOTLIGHT_WS_URL
 const COLOR_BLACK = '#000'
 
 function createSpotlightClient (canvas, socket) {
