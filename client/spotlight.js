@@ -46,11 +46,7 @@ function createSpotlightClient (canvas, socket) {
     resetCanvas()
 
     const imgData = ctx.createImageData(regionData.width, regionData.height)
-    const pixels = imgData.data
-    const buffer = new Uint8Array(data)
-    for (let i = 0; i < pixels.length; i++) {  // FIXME(vperron): Optimize this.
-      pixels[i] = buffer[i]
-    }
+    imgData.data.set(new Uint8Array(data))
     ctx.putImageData(imgData, regionData.left, regionData.top)
   }
 
