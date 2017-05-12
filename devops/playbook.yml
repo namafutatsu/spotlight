@@ -4,16 +4,23 @@
   vars_files:
     - vars/main.yml
   tasks:
-  - name: Install docker system dependencies
+
+  - name: Add let's encrypt Certbot PPA
+    apt_repository:
+      repo: ppa:certbot/certbot
+
+  - name: Install system dependencies
     apt:
       name: "{{ item }}"
       update_cache: yes
     with_items:
     - apt-transport-https
     - ca-certificates
+    - certbot
     - curl
     - nginx
     - python-docker
+    - software-properties-common
 
   - name: Add Docker CE signing repository key
     shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
