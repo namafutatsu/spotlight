@@ -1,3 +1,4 @@
+const throttle = require('lodash.throttle')
 const WebSocketServer = require('ws').Server
 
 const constants = require('./constants')
@@ -17,7 +18,7 @@ wss.on('connection', function (wsInstance) {
 
   const interval = setInterval(server.sendPixels, constants.REFRESH_RATE)
 
-  wsInstance.on('message', function (rawMsg) {
+  wsInstance.on('message', throttle(function (rawMsg) {
     const msg = JSON.parse(rawMsg)
     switch (msg.type) {
       case constants.MSG_INIT:
@@ -27,7 +28,7 @@ wss.on('connection', function (wsInstance) {
         server.setCoords(msg.coords)
         break
     }
-  })
+  }, 25))  // In ms. "experimentally" chosen to get a smooth rendering.
 
   wsInstance.on('close', function () {
     console.log('WS: closing and removing interval sender')
