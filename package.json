@@ -1,6 +1,6 @@
 {
   "name": "spotlight",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Spotlight project",
   "devDependencies": {
     "eslint": "^3.19.0",
