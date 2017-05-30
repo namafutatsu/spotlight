@@ -60,6 +60,11 @@ Spotlight runs on a dedicated server named `someserver` (for now)
 
 There's a set of Ansible rules used to set it up and running.
 
+Build the images and deploy them::
+
+  make deploy
+
+
 First setup
 ~~~~~~~~~~~
 Add your user to the server.
@@ -88,7 +93,7 @@ Add your user to the server.
 Provision the server using Ansible
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Install Ansible on your local machine.
- Now you can provision the server with the following:
+Now you can provision the server with the following:
 
 .. code-block::
 

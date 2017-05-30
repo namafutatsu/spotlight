@@ -9,6 +9,7 @@ client/image.tar:
 server/image.tar:
 	rm -f $@ && \
 		cd server && \
+		rm -rf node_modules && \
 		docker build . --tag spotlight_server:latest && \
 		docker save --output $(notdir $@) spotlight_server:latest
 
@@ -16,3 +17,6 @@ clean:
 	rm -f client/image.tar server/image.tar
 
 docker_images: client/image.tar server/image.tar
+
+deploy: clean docker_images
+	ansible-playbook devops/playbook.yml
