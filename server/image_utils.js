@@ -19,6 +19,7 @@ function computeWindowSize (handicap = 0) {
 }
 
 function createMask () {
+  // FIXME(vperron): For some window Sizes this may horribly fail
   mask = new Canvas(windowSize, windowSize)
   const maskCtx = mask.getContext('2d')
   maskCtx.fillStyle = 'black'
@@ -33,10 +34,27 @@ function createMask () {
   maskCtx.fill()
 }
 
-function getCanvasImageFrom (filePath) {
-  const img = new Canvas.Image()
+function getCanvasImageFrom (filePath, maxWidth, maxHeight) {
+  const originalImg = new Canvas.Image()
   const data = fs.readFileSync(filePath)
-  img.src = data
+  originalImg.src = data
+
+  let ratio = 1.0
+  if (originalImg.height > maxHeight) {
+    ratio = maxHeight / originalImg.height
+  } else if (originalImg.width > maxWidth) {
+    ratio = maxWidth / originalImg.width
+  }
+
+  const finalWidth = ratio * originalImg.width
+  const finalHeight = ratio * originalImg.height
+  const cnv = new Canvas(finalWidth, finalHeight)
+  const ctx = cnv.getContext('2d')
+  ctx.drawImage(originalImg, 0, 0, finalWidth, finalHeight)
+
+  const img = new Canvas.Image()
+  img.src = cnv.toBuffer()
+
   maxImgDimension = Math.max(img.width, img.height)
   computeWindowSize()
   createMask()

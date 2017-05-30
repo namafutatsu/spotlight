@@ -21,7 +21,7 @@ wss.on('connection', function (wsInstance) {
     const msg = JSON.parse(rawMsg)
     switch (msg.type) {
       case constants.MSG_INIT:
-        server.initImage(msg.image_name)
+        server.initImage(msg.image_name, msg.width, msg.height)
         break
       case constants.MSG_COORDS:
         server.setCoords(msg.coords)

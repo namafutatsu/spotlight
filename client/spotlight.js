@@ -16,7 +16,9 @@ function createSpotlightClient (canvas, socket) {
   function askForImage (imageName) {
     socket.send(JSON.stringify({
       type: 'init',
-      image_name: imageName
+      image_name: imageName,
+      width: window.innerWidth * 0.95,  // to ensure we are smaller than the window
+      height: window.innerHeight * 0.95
     }))
   }
 
@@ -89,6 +91,9 @@ document.addEventListener('DOMContentLoaded', function () {
       switch (msg.type) {
         case TYPE_IMAGE:
           client.setImageDetails(msg.width, msg.height)
+          canvas.style.position = 'absolute'
+          canvas.style.left = `${(window.innerWidth - msg.width) / 2}px`
+          canvas.style.top = `${(window.innerHeight - msg.height) / 2}px`
           break
         case TYPE_REGION:
           client.setRegionData(msg.region)

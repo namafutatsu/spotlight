@@ -12,8 +12,10 @@ function createSpotlightServer (wsInstance) {
     return (a.x !== b.x || a.y !== b.y)
   }
 
-  function initImage (imageName) {
-    img = imgUtils.getCanvasImageFrom(path.join(__dirname, imageName))
+  function initImage (imageName, width, height) {
+    img = imgUtils.getCanvasImageFrom(
+      path.join(__dirname, imageName),
+      width, height)
     wsInstance.send(JSON.stringify({
       type: 'image',
       width: img.width,
