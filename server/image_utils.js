@@ -15,18 +15,17 @@ function computeWindowSize (handicap = 0) {
     MIN_WINDOW_SIZE,
     maxImgDimension / WINDOW_SIZE_IMG_RATIO
   )
-  windowSize = Math.max(windowSize - handicap, 0)
+  windowSize = Math.floor(Math.max(windowSize - handicap, 0))
 }
 
 function createMask () {
-  // FIXME(vperron): For some window Sizes this may horribly fail
   mask = new Canvas(windowSize, windowSize)
   const maskCtx = mask.getContext('2d')
   maskCtx.fillStyle = 'black'
   maskCtx.fillRect(0, 0, mask.width, mask.height)
   maskCtx.globalCompositeOperation = 'xor'
-  const radius = windowSize / 2
-  const innerRadius = radius * SHADOW_RADIUS_RATIO
+  const radius = Math.floor(windowSize / 2)
+  const innerRadius = Math.floor(radius * SHADOW_RADIUS_RATIO)
   maskCtx.arc(radius, radius, innerRadius, 0, 2 * Math.PI)
   maskCtx.fill()
   maskCtx.shadowBlur = SHADOW_BLUR
