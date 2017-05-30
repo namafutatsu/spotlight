@@ -67,6 +67,12 @@ function createSpotlightClient (canvas, socket) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  const imageHash = window.location.hash.substr(1)
+  if (!imageHash) {
+    document.body.innerHTML = 'No image specified.'
+    return
+  }
+
   const canvas = document.getElementById('image')
   const socket = new WebSocket(WS_ADDRESS)
   socket.binaryType = 'arraybuffer'
@@ -80,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   socket.onopen = function () {
     console.log(`WS opened on ${WS_ADDRESS}`)
-    client.askForImage('image.jpg')  // TODO(vperron): This has to become dynamic.
+    client.askForImage(imageHash)
   }
 
   socket.onmessage = function (rawMsg) {

@@ -13,3 +13,5 @@ applications:
     container_name: spotlight-server
     port: 8080
     public_url: ws.spotlight.cam
+    volumes:
+      - "/tmp/spotlight_images:/tmp/spotlight_images"

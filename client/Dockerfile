@@ -8,7 +8,7 @@ RUN apk add --no-cache --upgrade nginx && \
 RUN mkdir -p /run/nginx
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY index.html settings.js spotlight.js /var/www/
+COPY index.html upload.html settings.js spotlight.js upload.js /var/www/
 
 CMD echo "window.SPOTLIGHT_WS_URL = '$SPOTLIGHT_WS_URL';" > /var/www/settings.js && \
   nginx

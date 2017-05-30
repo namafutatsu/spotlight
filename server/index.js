@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+
 const throttle = require('lodash.throttle')
 const WebSocketServer = require('ws').Server
 
@@ -18,15 +21,28 @@ wss.on('connection', function (wsInstance) {
 
   const interval = setInterval(server.sendPixels, constants.REFRESH_RATE)
 
-  wsInstance.on('message', throttle(function (rawMsg) {
-    const msg = JSON.parse(rawMsg)
-    switch (msg.type) {
-      case constants.MSG_INIT:
-        server.initImage(msg.image_name, msg.width, msg.height)
-        break
-      case constants.MSG_COORDS:
-        server.setCoords(msg.coords)
-        break
+  wsInstance.on('message', throttle(function (rawMsg, flags) {
+    if (flags.binary) {
+      const name = Math.random().toString(36).substr(2, 8)  // random name.
+      const filename = path.join(constants.IMAGE_PATH, name)
+      if (!fs.existsSync(constants.IMAGE_PATH)) {
+        fs.mkdirSync(constants.IMAGE_PATH, rawMsg)
+      }
+      fs.writeFileSync(filename, rawMsg)
+      wsInstance.send(JSON.stringify({
+        type: 'upload',
+        name: name
+      }))
+    } else {
+      const msg = JSON.parse(rawMsg)
+      switch (msg.type) {
+        case constants.MSG_INIT:
+          server.initImage(msg.image_name, msg.width, msg.height)
+          break
+        case constants.MSG_COORDS:
+          server.setCoords(msg.coords)
+          break
+      }
     }
   }, 25))  // In ms. "experimentally" chosen to get a smooth rendering.
 

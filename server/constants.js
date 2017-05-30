@@ -1,4 +1,5 @@
 module.exports = {
+  IMAGE_PATH: '/tmp/spotlight_images',
   MSG_COORDS: 'coords',
   MSG_INIT: 'init',
   MSG_REGION: 'region',
