@@ -71,10 +71,10 @@
       name: "{{ item.container_name }}"
     with_items: "{{ applications }}"
  
-  - name: Disable nginx default website
-    file:
-      path: /etc/nginx/sites-enabled/default
-      state: absent
+  - name: Change nginx default website
+    copy:
+      src: nginx-default.site
+      dest: /etc/nginx/sites-available/default
 
   - name: Configure nginx to provide both sites
     template:
