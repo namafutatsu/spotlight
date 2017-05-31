@@ -6,7 +6,7 @@ const SPOTLIGHT_URL = location.protocol + '//' + location.host
 function handleFiles () {
   const file = this.files[0]
 
-  if ((file.size / 1024 / 1024) >= 1.0) {
+  if ((file.size / 1024 / 1024) >= 10.0) {
     document.getElementById('status').innerHTML = "File is too big."
     return
   }
