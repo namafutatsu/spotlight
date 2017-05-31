@@ -67,6 +67,7 @@ function createSpotlightClient (canvas, socket) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+
   const imageHash = window.location.hash.substr(1)
   if (!imageHash) {
     document.body.innerHTML = 'No image specified.'
@@ -82,6 +83,11 @@ document.addEventListener('DOMContentLoaded', function () {
   canvas.addEventListener('mousemove', (event) => {
     event.preventDefault()
     client.askForRegionData(event.offsetX, event.offsetY)
+  })
+
+  canvas.addEventListener('touchmove', (event) => {
+    event.preventDefault()
+    client.askForRegionData(event.touches[0].clientX, event.touches[0].clientY)
   })
 
   socket.onopen = function () {
