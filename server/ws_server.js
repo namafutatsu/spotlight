@@ -1,10 +1,12 @@
 const path = require('path')
+const fs = require('fs')
 
 const constants = require('./constants')
 const imgUtils = require('./image_utils')
 
 function createSpotlightServer (wsInstance) {
   let img = null
+  let messages = null
   let alreadySentCoords = null
   let newCoords = null
 
@@ -21,6 +23,14 @@ function createSpotlightServer (wsInstance) {
       width: img.width,
       height: img.height
     }))
+    fs.readFile(path.join(__dirname, imageName + '.json'), 'utf8', function (err, data) {
+      if (err) return
+      messages = JSON.parse(data)
+      messages.forEach(message => {
+        message.type = 'message'
+        wsInstance.send(JSON.stringify(message))
+      })
+    })
   }
 
   function setCoords (coords) {

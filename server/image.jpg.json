@@ -1,0 +1,14 @@
+[
+  {
+    "x": 270,
+    "y": 520,
+    "text": "Texte caché",
+    "font": "bold 24px sans-serif"
+  },
+  {
+    "x": 750,
+    "y": 780,
+    "text": "Bite",
+    "font": "bold 24px sans-serif"
+  }
+]
