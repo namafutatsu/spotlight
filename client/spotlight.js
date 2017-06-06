@@ -3,8 +3,10 @@
 const TYPE_IMAGE = 'image'
 const TYPE_REGION = 'region'
 
-const WS_ADDRESS = SPOTLIGHT_WS_URL
+const SPOTLIGHT_CLIENT_URL = location.protocol + '//' + location.host
+
 const COLOR_BLACK = '#000'
+
 
 function createSpotlightClient (canvas, socket) {
   const ctx = canvas.getContext('2d')
@@ -66,16 +68,50 @@ function createSpotlightClient (canvas, socket) {
   }
 }
 
+function handleFileUpload () {
+  const file = this.files[0]
+
+  if ((file.size / 1024 / 1024) >= 10.0) {
+    document.getElementById('status').innerHTML = "File is too big."
+    return
+  }
+
+  const socket = new WebSocket(SPOTLIGHT_WS_URL)
+  socket.binaryType = 'arraybuffer'
+
+  socket.onopen = function () {
+    console.log(`WS opened for upload on ${SPOTLIGHT_WS_URL}`)
+    const reader = new FileReader()
+    reader.onload = () => {
+      socket.send(reader.result)
+      console.log(`Data successfully sent to WS`)
+    }
+    reader.readAsArrayBuffer(file)
+  }
+
+  socket.onmessage = function (rawMsg) {
+    const msg = JSON.parse(rawMsg.data)
+    console.log('Received data back from WS:', msg)
+    const url = `${SPOTLIGHT_CLIENT_URL}#${msg.name}`
+    document.getElementById('status').href = url
+    document.getElementById('status').innerHTML = url
+    socket.close()
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
   const imageHash = window.location.hash.substr(1)
   if (!imageHash) {
-    document.body.innerHTML = 'No image specified.'
+    document.body.innerHTML = '<input id="upload-input" type="file" accept="image/*"><a id="status"></span>'
+    document.getElementById('upload-input').addEventListener('change', handleFileUpload, false)
     return
   }
 
+  document.body.innerHTML = "<canvas id='image'></canvas>"
+
   const canvas = document.getElementById('image')
-  const socket = new WebSocket(WS_ADDRESS)
+  const socket = new WebSocket(SPOTLIGHT_WS_URL)
   socket.binaryType = 'arraybuffer'
 
   const client = createSpotlightClient(canvas, socket)
@@ -91,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
   })
 
   socket.onopen = function () {
-    console.log(`WS opened on ${WS_ADDRESS}`)
+    console.log(`WS opened on ${SPOTLIGHT_WS_URL}`)
     client.askForImage(imageHash)
   }
 
@@ -115,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   socket.onclose = function () {
-    console.log(`WS closed on ${WS_ADDRESS}`)
+    console.log(`WS closed on ${SPOTLIGHT_WS_URL}`)
     // TODO(vperron): This WS should reconnect !
   }
 })
