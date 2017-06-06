@@ -9,7 +9,7 @@ const spotlight = require('./ws_server')
 
 const wss = new WebSocketServer({
   port: constants.WEBSOCKET_PORT,
-  perMessageDeflate: false // enable sending binary data, bug in node-ws
+  perMessageDeflate: true,  // gzip compression, protocol-level
 })
 
 console.log(`WebSocket server listening on port ${constants.WEBSOCKET_PORT}`)
