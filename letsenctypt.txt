@@ -1,0 +1,44 @@
+(Y)es/(N)o: Y
+Starting new HTTPS connection (1): supporters.eff.org
+Obtaining a new certificate
+Performing the following challenges:
+http-01 challenge for spotlight.com
+http-01 challenge for ws.potlight.com
+Using the webroot path /etc/spotlight for all unmatched domains.
+Waiting for verification...
+Cleaning up challenges
+Failed authorization procedure. spotlight.com (http-01): urn:acme:error:unauthorized :: The client lacks sufficient authorization :: Invalid response from http://spotlight.com/.well-known/", ws.potlight.com (http-01): urn:acme:error:unauthorized :: The client lacks sufficient authorization :: Invalid response from http://ws.potlight.com/.well-known/acme-challenge/M6LQXk4J9QNE0gPoO0Bkq_saKKBckmb5Ee_ZAAG8XGQ: "<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Conte"
+
+IMPORTANT NOTES:
+ - The following errors were reported by the server:
+
+   Domain: spotlight.com
+   Type:   unauthorized
+   Detail: Invalid response from
+   http://spotlight.com/.well-known/acme-challenge/Pjz3RtftJtPr7slczG8UHKlQycPPUSBj3s4PGoF7FSc:
+   "<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html>
+   "
+
+   Domain: ws.potlight.com
+   Type:   unauthorized
+   Detail: Invalid response from
+   http://ws.potlight.com/.well-known/acme-challenge/M6LQXk4J9QNE0gPoO0Bkq_saKKBckmb5Ee_ZAAG8XGQ:
+   "<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+   <html>
+   <head>
+   <meta http-equiv="Conte"
+
+   To fix these errors, please make sure that your domain name was
+   entered correctly and the DNS A record(s) for that domain
+   contain(s) the right IP address.
+ - Your account credentials have been saved in your Certbot
+   configuration directory at /etc/letsencrypt. You should make a
+   secure backup of this folder now. This configuration directory will
+   also contain certificates and private keys obtained by Certbot so
+   making regular backups of this folder is ideal.
+
