@@ -1,9 +1,0 @@
-{
-  "name": "spotlight-server",
-  "version": "0.1.0",
-  "dependencies": {
-    "canvas": "^1.6.5",
-    "lodash.throttle": "^4.1.1",
-    "ws": "^2.3.1"
-  }
-}
